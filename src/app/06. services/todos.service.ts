@@ -8,8 +8,8 @@ export class TodoService{
     addTodo(todo){
         return this._http.post('...',todo).map(r=>r.json());
     }
-    getTodos(todo){
-        return this._http.get('...',todo).map(r=>r.json());
+    getTodos(){
+        return this._http.get('...').map(r=>r.json());
     }
     delete(id){
         return this._http.delete('..',id).map(r=>r.json());
