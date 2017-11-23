@@ -19,5 +19,7 @@ export class TodosComponent{
     delete(id){
         if(confirm('Are you sure?'))
                 this._todoService.delete(id).subscribe(data=>this.todos=data);
+        else
+            return true;
     }
 }

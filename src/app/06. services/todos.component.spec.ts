@@ -20,7 +20,7 @@ describe('TodosComponent',()=>{
 
         component.ngOnInit();
         
-        expect(component.todos.length).toBeGreaterThan(1);
+        //expect(component.todos.length).toBeGreaterThan(1);
         expect(component.todos).toBe(todos);
     })
 
@@ -56,11 +56,12 @@ describe('TodosComponent',()=>{
         expect(component.message).toBe(error);
     });
 
-    it('should call the server to delete a todo item if the user confirms',()=>{
+    it('should NOT call the server to delete a todo item if the user cancels',()=>{
+        spyOn(window,'confirm').and.returnValue(false);
+        let spy = spyOn(service,'delete').and.returnValue(Observable.empty());
 
-    });
+        component.delete(1);
 
-    it('should',()=>{
-        
+        expect(spy).not.toHaveBeenCalledWith(1);
     });
 })
