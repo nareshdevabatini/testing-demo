@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from './todo.service'
+import { promise } from 'selenium-webdriver';
+import { Promise } from 'q';
 
 @Component({
   selector: 'app-todos',
@@ -13,7 +15,12 @@ export class TodosComponent implements OnInit {
   constructor(private service: TodoService) {}
 
   ngOnInit() { 
-    this.service.getTodos().subscribe(t => this.todos = t);
+   // this.service.getTodos().subscribe(t => this.todos = t);
+   this.service.getTodosPromise().then(t => {
+     //console.log("promise")
+     this.todos = t
+    });
+   
   }
 
   add() { 

@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { UserDetailsComponent } from './user-details.component';
+import { Subject } from 'rxjs/Subject';
 
 class RouterStub{
   navigate(params){
@@ -14,7 +15,15 @@ class RouterStub{
 }
 
 class ActivatedRouteStub{
-  params:Observable<any> = Observable.empty();
+  private subject = new Subject();
+  push(value){
+    this.subject.next(value)
+  }
+
+  get params(){
+    return this.subject.asObservable();
+  }
+  //params:Observable<any> = Observable.empty();
 }
 
 describe('UserDetailsComponent', () => {
@@ -38,7 +47,23 @@ describe('UserDetailsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should redirect the users to the users page after saving', () => {
+    let router=TestBed.get(Router);
+    let spy = spyOn(router,'navigate');
+
+    component.save();
+
+    expect(spy).toHaveBeenCalledWith(['users']);
   });
+
+  it('should naviagate the user to the not found page when ngoninit', () => {
+    let router=TestBed.get(Router);
+    let spy = spyOn(router,'navigate');
+
+    let route:ActivatedRouteStub=TestBed.get(ActivatedRoute);
+    route.push({id:0})
+
+    expect(spy).toHaveBeenCalledWith(['not-found']);
+  }); 
+
 });
